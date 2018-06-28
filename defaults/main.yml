@@ -3,7 +3,8 @@
 tower_node: "192.168.122.137"
 
 ## need these regardless of single node/clustered install
-cluster: 'False'
+cluster: "False"
+tower_license: "license.txt"
 tower_install_user: "ansible"
 inventory_cluster: "inventory_cluster.j2"
 inventory_allinone: "inventory_allinone.j2"

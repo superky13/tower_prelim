@@ -57,16 +57,25 @@
   args:
     chdir: "{{ tower_install_user_home_dir }}/{{ tower_version }}"
   when: inventory_hostname in groups['tower_nodes'] | first
+
+- name: add eula acceptance to license before posting to tower api
+  lineinfile:
+    path: files/license.txt
+    regexp: '^{'
+    insertafter: '^{'
+    line: '{ "eula_accepted" : "true",'
+  delegate_to: localhost
+
+- name: post the tower license to the api
+  uri:
+    url: "https://{{ tower_nodes }}/api/v2/config/"
+    method: POST
+    user: admin
+    password: redhat
+    body: "{{ lookup('file', '{{ tower_license }}') }}"
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+    validate_certs: false
+  when: inventory_hostname in groups['tower_nodes'] | first
  
-## uncomment if you have a valid tower license.txt that you wish to push/post to your tower api
-#- name: post the tower license to the api
-#  uri:
-#    url: https://towerFQDN/api/v2/config
-#    method: POST
-#    user: admin
-#    password: "{{ admin_tower_pw }}" 
-#    body: "{{ lookup('file', 'license.txt') }}"
-#    force_basic_auth: yes
-#    status_code: 201
-#    body_format: json 
-#    validate_certs: no
