@@ -68,7 +68,7 @@
 
 - name: post the tower license to the api
   uri:
-    url: "https://{{ tower_nodes }}/api/v2/config/"
+    url: "https://{{ inventory_hostname }}/api/v2/config/"
     method: POST
     user: admin
     password: redhat
