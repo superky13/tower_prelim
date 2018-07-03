@@ -1,4 +1,8 @@
 ---
+- name: for internet reachable installs include the tarball pull
+  include_tasks: pull_tower_tarball.yml
+  when: pull_tarball == 'True'
+
 - name: copy the tarball to the first tower node
   copy:
     src: "{{ ansible_tower_tar_path }}"
